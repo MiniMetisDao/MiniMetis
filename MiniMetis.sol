@@ -1,12 +1,6 @@
-/**
- *Submitted for verification at BscScan.com on 2021-11-20
-*/
-
-// Dependency file: @openzeppelin/contracts/utils/math/SafeMath.sol
-
 // SPDX-License-Identifier: MIT
 
-// pragma solidity ^0.8.0;
+// OpenZeppelin Contracts (last updated v4.6.0) (utils/math/SafeMath.sol)
 
 // CAUTION
 // This version of SafeMath should only be used with Solidity 0.8 or later,
@@ -15,7 +9,7 @@
 /**
  * @dev Wrappers over Solidity's arithmetic operations.
  *
- * NOTE: `SafeMath` is no longer needed starting with Solidity 0.8. The compiler
+ * NOTE: `SafeMath` is generally not needed starting with Solidity 0.8, since the compiler
  * now has built in overflow checking.
  */
 library SafeMath {
@@ -33,7 +27,7 @@ library SafeMath {
     }
 
     /**
-     * @dev Returns the substraction of two unsigned integers, with an overflow flag.
+     * @dev Returns the subtraction of two unsigned integers, with an overflow flag.
      *
      * _Available since v3.4._
      */
@@ -230,98 +224,6 @@ library SafeMath {
         }
     }
 }
-
-
-// Dependency file: @openzeppelin/contracts/proxy/Clones.sol
-
-
-// pragma solidity ^0.8.0;
-
-/**
- * @dev https://eips.ethereum.org/EIPS/eip-1167[EIP 1167] is a standard for
- * deploying minimal proxy contracts, also known as "clones".
- *
- * > To simply and cheaply clone contract functionality in an immutable way, this standard specifies
- * > a minimal bytecode implementation that delegates all calls to a known, fixed address.
- *
- * The library includes functions to deploy a proxy using either `create` (traditional deployment) or `create2`
- * (salted deterministic deployment). It also includes functions to predict the addresses of clones deployed using the
- * deterministic method.
- *
- * _Available since v3.4._
- */
-library Clones {
-    /**
-     * @dev Deploys and returns the address of a clone that mimics the behaviour of `implementation`.
-     *
-     * This function uses the create opcode, which should never revert.
-     */
-    function clone(address implementation) internal returns (address instance) {
-        assembly {
-            let ptr := mload(0x40)
-            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)
-            mstore(add(ptr, 0x14), shl(0x60, implementation))
-            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)
-            instance := create(0, ptr, 0x37)
-        }
-        require(instance != address(0), "ERC1167: create failed");
-    }
-
-    /**
-     * @dev Deploys and returns the address of a clone that mimics the behaviour of `implementation`.
-     *
-     * This function uses the create2 opcode and a `salt` to deterministically deploy
-     * the clone. Using the same `implementation` and `salt` multiple time will revert, since
-     * the clones cannot be deployed twice at the same address.
-     */
-    function cloneDeterministic(address implementation, bytes32 salt) internal returns (address instance) {
-        assembly {
-            let ptr := mload(0x40)
-            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)
-            mstore(add(ptr, 0x14), shl(0x60, implementation))
-            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)
-            instance := create2(0, ptr, 0x37, salt)
-        }
-        require(instance != address(0), "ERC1167: create2 failed");
-    }
-
-    /**
-     * @dev Computes the address of a clone deployed using {Clones-cloneDeterministic}.
-     */
-    function predictDeterministicAddress(
-        address implementation,
-        bytes32 salt,
-        address deployer
-    ) internal pure returns (address predicted) {
-        assembly {
-            let ptr := mload(0x40)
-            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)
-            mstore(add(ptr, 0x14), shl(0x60, implementation))
-            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf3ff00000000000000000000000000000000)
-            mstore(add(ptr, 0x38), shl(0x60, deployer))
-            mstore(add(ptr, 0x4c), salt)
-            mstore(add(ptr, 0x6c), keccak256(ptr, 0x37))
-            predicted := keccak256(add(ptr, 0x37), 0x55)
-        }
-    }
-
-    /**
-     * @dev Computes the address of a clone deployed using {Clones-cloneDeterministic}.
-     */
-    function predictDeterministicAddress(address implementation, bytes32 salt)
-        internal
-        view
-        returns (address predicted)
-    {
-        return predictDeterministicAddress(implementation, salt, address(this));
-    }
-}
-
-
-// Dependency file: contracts/interfaces/IUniswapV2Factory.sol
-
-// pragma solidity >=0.5.0;
-
 interface IUniswapV2Factory {
     event PairCreated(
         address indexed token0,
@@ -351,11 +253,6 @@ interface IUniswapV2Factory {
 
     function setFeeToSetter(address) external;
 }
-
-
-// Dependency file: contracts/interfaces/IUniswapV2Router02.sol
-
-// pragma solidity >=0.6.2;
 
 interface IUniswapV2Router01 {
     function factory() external pure returns (address);
@@ -563,11 +460,6 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
     ) external;
 }
 
-
-// Dependency file: contracts/interfaces/IERC20Extended.sol
-
-// pragma solidity =0.8.4;
-
 interface IERC20Extended {
     function totalSupply() external view returns (uint256);
 
@@ -603,11 +495,6 @@ interface IERC20Extended {
         uint256 value
     );
 }
-
-
-// Dependency file: contracts/buyback/Auth.sol
-
-// pragma solidity =0.8.4;
 
 abstract contract Auth {
     address internal owner;
@@ -674,15 +561,6 @@ abstract contract Auth {
     event OwnershipTransferred(address owner);
 }
 
-
-// Dependency file: contracts/buyback/DividendDistributor.sol
-
-// pragma solidity =0.8.4;
-
-// import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-// import "contracts/interfaces/IUniswapV2Router02.sol";
-// import "contracts/interfaces/IERC20Extended.sol";
-
 interface IDividendDistributor {
     function setDistributionCriteria(
         uint256 _minPeriod,
@@ -694,12 +572,15 @@ interface IDividendDistributor {
     function deposit() external payable;
 
     function process(uint256 gas) external;
+
+    function addDepositor(address depositor_, bool canDeposit_) external;
 }
 
 contract DividendDistributor is IDividendDistributor {
     using SafeMath for uint256;
 
     address public _token;
+    mapping(address => bool) public canDeposit;
 
     struct Share {
         uint256 amount;
@@ -735,19 +616,23 @@ contract DividendDistributor is IDividendDistributor {
     }
 
     modifier onlyToken() {
-        require(msg.sender == _token);
+        require(canDeposit[msg.sender] == true);
         _;
     }
 
-    constructor(address rewardToken_, address router_) {
+    constructor(address rewardToken_) {
         _token = msg.sender;
+        canDeposit[_token] = true;
         rewardToken = IERC20Extended(rewardToken_);
-        router = IUniswapV2Router02(router_);
 
         dividendsPerShareAccuracyFactor = 10**36;
         minPeriod = 1 hours;
         minDistribution = 1 * (10**rewardToken.decimals());
-    } 
+    }
+
+    function addDepositor(address depositor_, bool canDeposit_) external override onlyToken {
+        canDeposit[depositor_] = canDeposit_;
+    }
 
     function setDistributionCriteria(
         uint256 _minPeriod,
@@ -780,7 +665,6 @@ contract DividendDistributor is IDividendDistributor {
     }
 
     function deposit() external payable override onlyToken {
-        
         uint256 amount = msg.value;
         totalDividends = totalDividends.add(amount);
         dividendsPerShare = dividendsPerShare.add(
@@ -895,49 +779,12 @@ contract DividendDistributor is IDividendDistributor {
     }
 }
 
-
-// Dependency file: contracts/BaseToken.sol
-
-// pragma solidity =0.8.4;
-
-enum TokenType {
-    standard,
-    antiBotStandard,
-    liquidityGenerator,
-    antiBotLiquidityGenerator,
-    baby,
-    antiBotBaby,
-    buybackBaby,
-    antiBotBuybackBaby
-}
-
-abstract contract BaseToken {
-    event TokenCreated(
-        address indexed owner,
-        address indexed token,
-        TokenType tokenType,
-        uint256 version
-    );
-}
-
-
-// Root file: contracts/buyback/BuybackBabyToken.sol
-
 pragma solidity =0.8.4;
 
-// import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-// import "@openzeppelin/contracts/proxy/Clones.sol";
-// import "contracts/interfaces/IUniswapV2Factory.sol";
-// import "contracts/interfaces/IUniswapV2Router02.sol";
-// import "contracts/interfaces/IERC20Extended.sol";
-// import "contracts/buyback/Auth.sol";
-// import "contracts/buyback/DividendDistributor.sol";
-// import "contracts/BaseToken.sol";
-
-contract MiniMetisToken is IERC20Extended, Auth, BaseToken {
+contract MiniMetisToken is IERC20Extended, Auth {
     using SafeMath for uint256;
 
-    uint256 public constant VERSION = 1;
+    uint256 public constant VERSION = 2;
 
     address private constant DEAD = address(0xdead);
     address private constant ZERO = address(0);
@@ -1025,7 +872,7 @@ contract MiniMetisToken is IERC20Extended, Auth, BaseToken {
             address(this),
             router.WETH()
         );
-        distributor = new DividendDistributor(rewardToken_, router_);
+        distributor = new DividendDistributor(rewardToken_);
 
         _initializeFees(feeSettings_);
         _initializeLiquidityBuyBack();
@@ -1050,12 +897,6 @@ contract MiniMetisToken is IERC20Extended, Auth, BaseToken {
         _balances[msg.sender] = _totalSupply;
         emit Transfer(address(0), msg.sender, _totalSupply);
 
-        emit TokenCreated(
-            msg.sender,
-            address(this),
-            TokenType.buybackBaby,
-            VERSION
-        );
     }
 
     function _initializeFees(uint256[6] memory feeSettings_) internal {
@@ -1165,7 +1006,7 @@ contract MiniMetisToken is IERC20Extended, Auth, BaseToken {
             "Insufficient Balance"
         );
 
-        uint256 amountReceived = shouldTakeFee(sender)
+        uint256 amountReceived = shouldTakeFee(sender, recipient)
             ? takeFee(sender, recipient, amount)
             : amount;
 
@@ -1200,8 +1041,14 @@ contract MiniMetisToken is IERC20Extended, Auth, BaseToken {
         return true;
     }
 
-    function shouldTakeFee(address sender) internal view returns (bool) {
-        return !isFeeExempt[sender];
+    function shouldTakeFee(address sender, address recipient) internal view returns (bool) {
+        if(isFeeExempt[sender]){
+            return false;
+        } else if (isFeeExempt[recipient]){
+            return false;
+        } else {
+            return true;
+        }
     }
 
     function getTotalFee(bool selling) public view returns (uint256) {
@@ -1298,12 +1145,12 @@ contract MiniMetisToken is IERC20Extended, Auth, BaseToken {
             totalBNBFee
         );
 
-        try distributor.deposit{ value: amountBNBReflection }() {} catch {}
+        try distributor.deposit{value: amountBNBReflection}() {} catch {}
         payable(marketingFeeReceiver).transfer(amountBNBMarketing);
         payable(treasuryFeeReceiver).transfer(amountBNBMTreasury);
 
         if (amountToLiquify > 0) {
-            router.addLiquidityETH{ value: amountBNBLiquidity }(
+            router.addLiquidityETH{value: amountBNBLiquidity}(
                 address(this),
                 amountToLiquify,
                 0,
@@ -1400,6 +1247,10 @@ contract MiniMetisToken is IERC20Extended, Auth, BaseToken {
         isFeeExempt[holder] = exempt;
     }
 
+    function setRouter(address router_) external authorized {
+        router = IUniswapV2Router02(router_);
+    }
+
     function setBuyBacker(address acc, bool add) external authorized {
         buyBacker[acc] = add;
     }
@@ -1435,9 +1286,11 @@ contract MiniMetisToken is IERC20Extended, Auth, BaseToken {
         reflectionFee = _reflectionFee;
         marketingFee = _marketingFee;
         treasuryFee = _treasuryFee;
-        totalFee = _liquidityFee.add(_buybackFee).add(_reflectionFee).add(
-            _marketingFee
-        ).add(treasuryFee);
+        totalFee = _liquidityFee
+            .add(_buybackFee)
+            .add(_reflectionFee)
+            .add(_marketingFee)
+            .add(treasuryFee);
         feeDenominator = _feeDenominator;
         require(
             totalFee < feeDenominator / 4,
